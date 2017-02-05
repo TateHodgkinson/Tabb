@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +61,17 @@ public class DebtsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        recyclerView.addOnItemTouchListener(new CustomRVItemTouchListener(this.getContext(), recyclerView, new RecyclerViewItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Toast.makeText(getActivity(), "On Click: " + position , Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                Toast.makeText(getActivity(), "On Long Click: " + position, Toast.LENGTH_SHORT).show();
+            }
+        }));
 
         return v;
     }
@@ -106,13 +119,22 @@ public class DebtsFragment extends Fragment {
 
         List<Data> data = new ArrayList<>();
 
-        data.add(new Data("Batman vs Superman", "Following the destruction of Metropolis, Batman embarks on a personal vendetta against Superman ", R.mipmap.ic_launcher));
-        data.add(new Data("X-Men: Apocalypse", "X-Men: Apocalypse is an upcoming American superhero film based on the X-Men characters that appear in Marvel Comics ", R.mipmap.ic_launcher));
-        data.add(new Data("Captain America: Civil War", "A feud between Captain America and Iron Man leaves the Avengers in turmoil.  ", R.mipmap.ic_launcher));
-        data.add(new Data("Kung Fu Panda 3", "After reuniting with his long-lost father, Po  must train a village of pandas", R.mipmap.ic_launcher));
-        data.add(new Data("Warcraft", "Fleeing their dying home to colonize another, fearsome orc warriors invade the peaceful realm of Azeroth. ", R.mipmap.ic_launcher));
-        data.add(new Data("Alice in Wonderland", "Alice in Wonderland: Through the Looking Glass ", R.mipmap.ic_launcher));
+        data.add(new Data("Willam", "All 5% Precent", R.mipmap.ic_launcher));
+        data.add(new Data("Tate", "Huge Cunt Master", R.mipmap.ic_launcher));
+        data.add(new Data("Nathan", "Small Dude", R.mipmap.ic_launcher));
+        data.add(new Data("Joseph", "I like bondage", R.mipmap.ic_launcher));
+        data.add(new Data("Jack", "Stole your bitch", R.mipmap.ic_launcher));
+        data.add(new Data("Jamie", "Physcopathic suicdal mess", R.mipmap.ic_launcher));
+        data.add(new Data("Ryan", "Confused", R.mipmap.ic_launcher));
+        data.add(new Data("Abhinav", "Shirtless", R.mipmap.ic_launcher));
+
 
         return data;
+    }
+
+    public interface RecyclerViewItemClickListener {
+        public void onClick(View view, int position);
+
+        public void onLongClick(View view, int position);
     }
 }
