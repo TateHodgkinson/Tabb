@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -156,23 +157,26 @@ public class DebtsFragment extends Fragment {
         return v;
     }
 
-    public void fill_with_data(ArrayList<Data> data) {
+    public void fill_with_data(Data data, boolean modified) {
 
         List<Data> temp = new ArrayList<>();
         int size = adapter.list.size();
-//        adapter.list.clear();
-        for (int i = 0; i < size; i++) {
-            adapter.list.remove(i);
-            recyclerView.removeViewAt(i);
-            adapter.notifyItemRemoved(i);
-            adapter.notifyItemRangeChanged(i, size);
 
-        }
-        for (int i = 0; i < data.size(); i++) {
-            adapter.insert(i, new Data(getContactName(getContext(), data.get(i).name), data.get(i).amount, R.mipmap.ic_launcher));
-        }
+            if(!modified) {
+                adapter.insert(size, new Data(getContactName(getContext(), data.name), data.amount, R.mipmap.ic_launcher));
+            }else{
+                for(int i = 0; i < adapter.list.size(); i++){
+                    if(data.name.equals(adapter.list.get(i).name)){
+                        adapter.remove(adapter.list.get(i));
+                        adapter.insert(size,new Data(getContactName(getContext(), data.name), data.amount, R.mipmap.ic_launcher));
+                    }
+                }
+
+            }
+
 
     }
+
 
 
     public interface RecyclerViewItemClickListener {

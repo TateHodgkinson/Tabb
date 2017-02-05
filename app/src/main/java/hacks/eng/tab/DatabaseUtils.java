@@ -3,6 +3,7 @@ package hacks.eng.tab;
 import android.util.Log;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,6 +23,7 @@ public class DatabaseUtils {
 
     DatabaseUtils(DatabaseReference myDatabase) {
         myRef = myDatabase;
+
     }
 
 
@@ -61,6 +63,9 @@ public class DatabaseUtils {
     public boolean approvalStatus = false;
 
     boolean getApprovalStatus(final String curUser, final String findUser) {
+
+
+
         myRef.addValueEventListener(new ValueEventListener() {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -77,28 +82,48 @@ public class DatabaseUtils {
     }
 
 
-    ArrayList<Data> dataArrayList = new ArrayList<>();
     public void createList(final String phoneNumber){
-        myRef.addValueEventListener(new ValueEventListener() {
+
+        DatabaseReference theRef = myRef.child("Users").child(phoneNumber).child("Friends");
+
+        theRef.addChildEventListener(new ChildEventListener() {
+
+
 
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Iterable<DataSnapshot> friends = dataSnapshot.child("Users").child(phoneNumber).child("Friends").getChildren();
-                while (friends.iterator().hasNext()) {
-                    DataSnapshot ds = friends.iterator().next();
-                    String number = ds.getKey();
-                    double cur = ds.child("Amount").getValue(Double.class);
-                    dataArrayList.add(new Data(number,cur,0));
-                }
-                DebtsFragment.instance.fill_with_data(dataArrayList);
+            public void onChildAdded(DataSnapshot ds, String s) {
+                String number = ds.getKey();
+                Log.d("PHONE NUMBER-ADD", number);
+                double cur = ds.child("Amount").getValue(Double.class);
+                Data d = new Data(number,cur,0);
+                DebtsFragment.instance.fill_with_data(d,false);
             }
 
+            @Override
+            public void onChildChanged(DataSnapshot ds, String s) {
+                String number = ds.getKey();
+                Log.d("PHONE NUMBER-CHANGED", number);
+                double cur = ds.child("Amount").getValue(Double.class);
+                Data d = new Data(number,cur,0);
+                DebtsFragment.instance.fill_with_data(d,true);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
+
         });
     }
 
@@ -120,8 +145,9 @@ public class DatabaseUtils {
                         debts += cur;
                     }
 
-                    MainFragment.instance.updateTextViews(sum,debts);
+
                 }
+                MainFragment.instance.updateTextViews(sum,debts);
             }
 
 

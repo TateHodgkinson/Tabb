@@ -75,4 +75,10 @@ public class Recycler_View_Adapter extends RecyclerView.Adapter<View_Holder> {
         notifyItemRemoved(position);
     }
 
+    public void clear() {
+        int size = this.list.size();
+        this.list.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+
 }
