@@ -52,7 +52,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DebtsFragment.OnFragmentInteractionListener, MainFragment.OnFragmentInteractionListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements DebtsFragment.OnFragmentInteractionListener, View.OnClickListener {
 
     public static final String FILE_NAME = "temp.jpg";
     public static final int CAMERA_PERMISSIONS_REQUEST = 2;

@@ -167,7 +167,7 @@ public class AddDebtDialog extends DialogFragment {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference();
             DatabaseUtils databaseUtils = new DatabaseUtils(myRef);
-            databaseUtils.updateAmount(userDebt, userCred, amount, names[i]);
+            databaseUtils.updateAmount(userDebt, userCred, amount);
         }
     }
 
