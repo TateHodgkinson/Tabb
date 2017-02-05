@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.add_manual:
                 String[] name = {"You"};
                 TelephonyManager tm = (TelephonyManager) this.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-                String temp = tm.getLine1Number().replaceAll("\\(","").replaceAll("\\)","").replaceAll(" ", "");
+                String temp = tm.getLine1Number().replaceAll("\\(","").replaceAll("\\)","").replaceAll(" ", "").replaceAll("-","");
                 String myPhoneNumber = temp.substring(temp.length() - 10);
                 String[] phoneNumber = {myPhoneNumber};
                 launchAddDebtDialog(0, name, phoneNumber);
@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String[] phoneNumbers = new String[contacts.size() + 1];
             names[0] = "You";
             TelephonyManager tm = (TelephonyManager) this.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-            String temp = tm.getLine1Number().replaceAll("\\(","").replaceAll("\\)","").replaceAll(" ", "");
+            String temp = tm.getLine1Number().replaceAll("\\(","").replaceAll("\\)","").replaceAll(" ", "").replaceAll("-","");
             String myPhoneNumber = temp.substring(temp.length() - 10);
             phoneNumbers[0] = myPhoneNumber;
             for (int i = 0; i < contacts.size(); i++) {
@@ -398,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String[] phoneNumbers = new String[1];
                 names[0] = "You";
                 TelephonyManager tm = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-                String temp = tm.getLine1Number().replaceAll("\\(","").replaceAll("\\)","").replaceAll(" ", "");
+                String temp = tm.getLine1Number().replaceAll("\\(","").replaceAll("\\)","").replaceAll(" ", "").replaceAll("-","");
                 String myPhoneNumber = temp.substring(temp.length() - 10);
                 phoneNumbers[0] = myPhoneNumber;
 
