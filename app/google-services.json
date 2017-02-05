@@ -1,0 +1,45 @@
+{
+  "project_info": {
+    "project_number": "674963522867",
+    "firebase_url": "https://tabb-157723.firebaseio.com",
+    "project_id": "tabb-157723",
+    "storage_bucket": "tabb-157723.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674963522867:android:9345428fabe32d3b",
+        "android_client_info": {
+          "package_name": "hacks.eng.tab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "674963522867-v4ph06fmqpiq6uepks77cmmj3pqdf0e4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5Tv8_dFMUuMkkihIJmMwDTyCu838w2eg"
+        },
+        {
+          "current_key": "AIzaSyCASGzlwEPpR1SlAYVvqsHrHW2ru1nflzA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
