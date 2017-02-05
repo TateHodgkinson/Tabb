@@ -108,7 +108,7 @@ public class AddDebtDialog extends DialogFragment {
        final View view = inflater.inflate(R.layout.fragment_add_debt, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view)
-                .setTitle("Add Debt")
+                .setTitle("Create Transaction")
                 .setNeutralButton("Choose Contacts", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
