@@ -165,7 +165,6 @@ public class DebtsFragment extends Fragment {
     public List<Data> fill_with_data() {
 
         List<Data> data = new ArrayList<>();
-
         data.add(new Data("Willam", -50.00, R.mipmap.ic_launcher));
         data.add(new Data("Tate", 25.00, R.mipmap.ic_launcher));
         data.add(new Data("Nathan", 6.00, R.mipmap.ic_launcher));
@@ -174,7 +173,6 @@ public class DebtsFragment extends Fragment {
         data.add(new Data("Jamie", -25.00, R.mipmap.ic_launcher));
         data.add(new Data("Ryan", -20.00, R.mipmap.ic_launcher));
         data.add(new Data("Abhinav", 40.00, R.mipmap.ic_launcher));
-
 
         return data;
     }

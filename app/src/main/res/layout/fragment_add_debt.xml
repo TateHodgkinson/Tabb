@@ -12,7 +12,10 @@
  <EditText
      android:id="@+id/editTextDialog"
      android:layout_width="match_parent"
-     android:layout_height="wrap_content" >
+     android:layout_height="wrap_content"
+     android:hint="Total"
+     android:inputType="numberDecimal"
+     android:ems="10">
 
   <requestFocus />
 

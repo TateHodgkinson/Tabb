@@ -1,6 +1,7 @@
 package hacks.eng.tab;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -118,7 +120,11 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
                 animateFAB();
                 break;
             case R.id.add_manual:
-                launchAddDebtDialog(0, new HashMap<String, String>());
+                String[] name = {"You"};
+                TelephonyManager tm = (TelephonyManager)this.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+                String myPhoneNumber =  tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
+                String[] phoneNumber = {myPhoneNumber};
+                launchAddDebtDialog(0,name, phoneNumber);
                 break;
             case R.id.add_photo:
                 addReceiptPhoto();
@@ -174,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
     }
 
 
-    public void launchAddDebtDialog(int total, HashMap<String, String> contacts) {
+    public void launchAddDebtDialog(double total, String[] names, String[] phoneNumbers) {
         android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
         android.app.Fragment prev = getFragmentManager().findFragmentByTag("debtDialog");
         if (prev != null) {
@@ -183,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
         ft.addToBackStack(null);
 
         // Create and show the dialog.
-        android.app.DialogFragment newFragment = AddDebtDialog.newInstance(total, contacts);
+        android.app.DialogFragment newFragment = AddDebtDialog.newInstance(total, names, phoneNumbers);
         newFragment.show(ft, "debtDialog");
     }
 
@@ -247,16 +253,25 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             uploadImage(data.getData());
         } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
+            Toast.makeText(this, "Processing Receipt", Toast.LENGTH_LONG);
             uploadImage(Uri.fromFile(getCameraFile()));
         } else if (requestCode == AddDebtDialog.PICK_CONTACT && resultCode == RESULT_OK && data != null &&
                 data.hasExtra(ContactPickerActivity.RESULT_CONTACT_DATA)) {
             List<Contact> contacts = (List<Contact>) data.getSerializableExtra(ContactPickerActivity.RESULT_CONTACT_DATA);
             System.out.println("GOT CONTACTS: " + contacts.size());
-            HashMap<String, String> stuff = new HashMap<>();
-            for (Contact contact : contacts) {
-                stuff.put(contact.getDisplayName(), contact.getPhone(ContactsContract.CommonDataKinds.Phone.TYPE_WORK));
+            String[] names = new String[contacts.size()+1];
+            String[] phoneNumbers = new String[contacts.size()+1];
+            names[0] = "You";
+            TelephonyManager tm = (TelephonyManager)this.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+            String myPhoneNumber =  tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
+            phoneNumbers[0] = myPhoneNumber;
+            for (int i = 0; i < contacts.size(); i++) {
+                Contact contact = contacts.get(i);
+                names[i+1] = contact.getDisplayName();
+                String phone = contact.getPhone(ContactsContract.CommonDataKinds.Phone.TYPE_WORK);
+                phoneNumbers[i+1] = phone.substring(phone.length() - 10);
             }
-            launchAddDebtDialog(0, stuff);
+            launchAddDebtDialog(0, names, phoneNumbers);
         }
     }
 
@@ -383,8 +398,7 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
             }
 
             protected void onPostExecute(String result) {
-                //TODO mImageDetails.setText(result);
-                System.out.println(result);
+                System.out.println("POST: " + result);
             }
         }.execute();
     }
