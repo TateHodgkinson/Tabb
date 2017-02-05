@@ -1,18 +1,24 @@
 package hacks.eng.tab;
 
+import android.content.ContentResolver;
 import android.content.Context;
 
+import android.content.DialogInterface;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+
+import android.widget.EditText;
+
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -29,6 +35,8 @@ import java.util.List;
  */
 public class DebtsFragment extends Fragment {
 
+    String amount = "0";
+
     private OnFragmentInteractionListener mListener;
 
     public DebtsFragment() {
@@ -44,7 +52,7 @@ public class DebtsFragment extends Fragment {
     // TODO: Rename and change types and number of parameters
     public static DebtsFragment newInstance() {
         DebtsFragment fragment = new DebtsFragment();
-               return fragment;
+        return fragment;
     }
 
     @Override
@@ -67,7 +75,42 @@ public class DebtsFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new CustomRVItemTouchListener(this.getContext(), recyclerView, new RecyclerViewItemClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Toast.makeText(getActivity(), "On Long Click: " + position, Toast.LENGTH_SHORT).show();
+                LayoutInflater li = LayoutInflater.from(getContext());
+                View promptsView = li.inflate(R.layout.clear_debts_dialog, null);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        getContext());
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText userInput = (EditText) promptsView
+                        .findViewById(R.id.editTextDialog);
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        // get user input and set it to result
+                                        // edit text
+                                        amount = (userInput.getText()).toString();
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
             }
 
             @Override
@@ -140,4 +183,25 @@ public class DebtsFragment extends Fragment {
 
         public void onLongClick(View view, int position);
     }
+
+
+    public static String getContactName(Context context, String phoneNumber) {
+        ContentResolver cr = context.getContentResolver();
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
+        String contactName = null;
+        if (cursor.moveToFirst()) {
+            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+        }
+
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+
+        return contactName;
+    }
+
 }
