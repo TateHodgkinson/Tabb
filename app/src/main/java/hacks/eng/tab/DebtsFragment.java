@@ -144,6 +144,23 @@ public class DebtsFragment extends Fragment {
 
                     // show it
                     alertDialog.show();
+                }else{
+
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Confirm Payment")
+                            .setMessage("Are you sure you want to confirm?")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // continue with delete
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // do nothing
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
                 }
             }
 
