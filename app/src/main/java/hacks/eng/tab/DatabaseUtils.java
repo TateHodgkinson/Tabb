@@ -80,11 +80,11 @@ public class DatabaseUtils {
 
     class Transaction {
 
-        double[] amount;
+        double amount;
         String[] peopleInvolved;
         String time;
 
-        Transaction(double[] amountx, String[] peopleInvolvedx, String timex) {
+        Transaction(double amountx, String[] peopleInvolvedx, String timex) {
             amount = amountx;
             peopleInvolved = peopleInvolvedx;
             time = timex;
@@ -94,7 +94,7 @@ public class DatabaseUtils {
 
         public void addTransactionFirebase(DatabaseReference myRef) {
             for (int i = 0; i < peopleInvolved.length; i++) {
-                myRef.child("Users").child(peopleInvolved[0]).child("Transactions").child(time).child("PeopleInvolved").child(peopleInvolved[i]).child("AmountOwed").child(peopleInvolved[i]).setValue(amount[i]);
+                myRef.child("Users").child(peopleInvolved[0]).child("Transactions").child(time).child("PeopleInvolved").child(peopleInvolved[i]).child("AmountOwed").child(peopleInvolved[i]).setValue(amount);
                 myRef.child("Users").child(peopleInvolved[0]).child("Transactions").child(time).child("PeopleInvolved").child(peopleInvolved[i]).child("ApprovalStatus").setValue(false);
             }
 

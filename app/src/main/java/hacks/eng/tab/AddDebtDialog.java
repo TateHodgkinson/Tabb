@@ -17,13 +17,17 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.onegravity.contactpicker.contact.Contact;
 import com.onegravity.contactpicker.contact.ContactDescription;
 import com.onegravity.contactpicker.contact.ContactSortOrder;
 import com.onegravity.contactpicker.core.ContactPickerActivity;
 import com.onegravity.contactpicker.picture.ContactPictureType;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -56,10 +60,10 @@ public class AddDebtDialog extends DialogFragment {
 
     /**
      * Use this factory method to create a new instance of
-     *
+     * <p>
      * this fragment using the provided parameters.
      *
-     * @param total    The total cost of the debt
+     * @param total The total cost of the debt
      * @param names The friends that are being shared with
      * @return A new instance of fragment AddDebtDialog.
      */
@@ -84,7 +88,7 @@ public class AddDebtDialog extends DialogFragment {
     }
 
 
-    public void getContactList(){
+    public void getContactList() {
         Intent intent = new Intent(getActivity(), ContactPickerActivity.class)
                 .putExtra(ContactPickerActivity.EXTRA_THEME, R.style.ContactPicker_Theme_Light)
                 .putExtra(ContactPickerActivity.EXTRA_CONTACT_BADGE_TYPE, ContactPictureType.ROUND.name())
@@ -97,7 +101,7 @@ public class AddDebtDialog extends DialogFragment {
 
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstance){
+    public Dialog onCreateDialog(Bundle savedInstance) {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
@@ -108,28 +112,60 @@ public class AddDebtDialog extends DialogFragment {
                 .setNeutralButton("Choose Contacts", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                       getContactList();
+                        getContactList();
                     }
                 })
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Submit Data
+                        runTransaction();
+                        addCred();
                     }
                 })
-                .setNegativeButton("Cancel",null);
+                .setNegativeButton("Cancel", null);
 
         ListView list = (ListView) view.findViewById(R.id.listView);
         ArrayList<String> strings = new ArrayList<>();
-        for(int i = 0; names != null && i < names.length; i++){
+        for (int i = 0; names != null && i < names.length; i++) {
             strings.add(names[i] + " " + phoneNumbers[i]);
         }
         ListAdapter listAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, strings);
         list.setAdapter(listAdapter);
 
-        EditText text = (EditText)view.findViewById(R.id.editTextDialog);
+        EditText text = (EditText) view.findViewById(R.id.editTextDialog);
         text.setText("" + total);
         return builder.create();
+    }
+
+    void runTransaction() {
+
+        double amount = total / phoneNumbers.length;
+        String[] people = phoneNumbers;
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String strDate = sdf.format(c.getTime());
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        Transaction myTransaction = new Transaction(amount,people,strDate);
+        DatabaseUtils databaseUtils = new DatabaseUtils(myRef);
+
+        databaseUtils.performTransaction(myTransaction);
+
+
+    }
+
+    void addCred() {
+        String userCred = phoneNumbers[0];
+
+        for(int i = 0; i < phoneNumbers.length; i++) {
+            double amount = total / phoneNumbers.length;
+            String userDebt = phoneNumbers[i];
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference();
+            DatabaseUtils databaseUtils = new DatabaseUtils(myRef);
+            databaseUtils.updateAmount(userDebt, userCred, amount);
+        }
     }
 
 }
