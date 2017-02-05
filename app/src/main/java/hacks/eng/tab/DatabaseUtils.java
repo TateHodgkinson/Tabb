@@ -28,7 +28,7 @@ public class DatabaseUtils {
     }
 
     void updateAmount(final String userDebt, final String userCred, final double amount) {
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
