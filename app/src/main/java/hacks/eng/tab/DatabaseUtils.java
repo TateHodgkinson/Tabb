@@ -9,6 +9,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 /**
  * Created by williamgill on 2017-02-04.
  */
@@ -77,6 +79,7 @@ public class DatabaseUtils {
     private double sum = 0;
     private double debts = 0;
 
+
     double[] totalSum(final String phoneNumber) {
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -86,7 +89,8 @@ public class DatabaseUtils {
 
                 Iterable<DataSnapshot> friends = dataSnapshot.child("Users").child(phoneNumber).child("Friends").getChildren();
                 while (friends.iterator().hasNext()) {
-                    double cur = (double) friends.iterator().next().child("Amount").getValue();
+                    DataSnapshot ds = (DataSnapshot) friends.iterator().next();
+                    double cur = (double) ds.child("Amount").getValue();
                     if (cur > 0) {
                         sum += cur;
                     } else {
@@ -94,7 +98,6 @@ public class DatabaseUtils {
                     }
                 }
             }
-
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -107,6 +110,33 @@ public class DatabaseUtils {
         return credDebt;
 
         //Date, amount, people involved, approval status for each person
+    }
+
+
+    ArrayList<Data> dataArrayList = new ArrayList<>();
+    ArrayList<Data> createList(final String phoneNumber){
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Iterable<DataSnapshot> friends = dataSnapshot.child("Users").child(phoneNumber).child("Friends").getChildren();
+                while (friends.iterator().hasNext()) {
+                    DataSnapshot ds = (DataSnapshot) friends.iterator().next();
+                    String number = (String) ds.getValue();
+                    double cur = (double) ds.child("Amount").getValue();
+                    dataArrayList.add(new Data(number,cur,0));
+
+                }
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return dataArrayList;
     }
 }
 
