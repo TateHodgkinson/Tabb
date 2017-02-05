@@ -179,7 +179,6 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
             add_manual.setClickable(false);
             add_photo.setClickable(false);
             isFabOpen = false;
-            Log.d("Raj", "close");
 
         } else {
 
@@ -189,7 +188,6 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
             add_manual.setClickable(true);
             add_photo.setClickable(true);
             isFabOpen = true;
-            Log.d("Raj", "open");
 
         }
     }
@@ -259,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
                 Bitmap bitmap =
                         scaleBitmapDown(
                                 MediaStore.Images.Media.getBitmap(getContentResolver(), uri),
-                                1200);
+                                1920);
                 callCloudVision(bitmap);
                 //TODO mMainImage.setImageBitmap(bitmap);
 

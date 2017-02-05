@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Credit:"
-        android:textColor="#FFF8DC"
+        android:textColor="@color/Cornsilk"
         android:textSize="180px"
         android:ems="10"
         android:gravity="center"
@@ -26,13 +26,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/dummy"
         android:layout_alignParentBottom="true"
-        android:background="#DC143C" />
+        android:background="@color/DarkRed" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Debt:"
-        android:textColor="#FFF8DC"
+        android:textColor="@color/Cornsilk"
         android:ems="10"
         android:gravity="center"
         android:textStyle="bold"
@@ -45,7 +45,7 @@
 
     <TextView
         android:text="$100"
-        android:textColor="#FFF8DC"
+        android:textColor="@color/Cornsilk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -67,7 +67,7 @@
 
     <TextView
         android:text="$1000"
-        android:textColor="#FFF8DC"
+        android:textColor="@color/Cornsilk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
