@@ -27,7 +27,7 @@ public class DatabaseUtils {
         transaction.addTransactionFirebase(myRef);
     }
 
-    void updateAmount(final String userDebt, final String userCred, final double amount, final String name) {
+    void updateAmount(final String userDebt, final String userCred, final double amount) {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -37,14 +37,14 @@ public class DatabaseUtils {
                     myRef.child("Users").child(userCred).child("Friends").child(userDebt).child("Amount").setValue(amountCur + amount);
                 } else {
                     myRef.child("Users").child(userCred).child("Friends").child(userDebt).child("Amount").setValue(amount);
-                    myRef.child("Users").child(userCred).child("Friends").child(userDebt).child("Username").setValue(name);
+
                 }
                 if (dataSnapshot.child("Users").child(userDebt).child("Friends").hasChild(userCred)) {
-                    double amountCur =  dataSnapshot.child("Users").child(userDebt).child("Friends").child(userCred).child("Amount").getValue(Double.class);
+                    double amountCur = dataSnapshot.child("Users").child(userDebt).child("Friends").child(userCred).child("Amount").getValue(Double.class);
                     myRef.child("Users").child(userDebt).child("Friends").child(userCred).child("Amount").setValue(amountCur - amount);
                 } else {
                     myRef.child("Users").child(userDebt).child("Friends").child(userCred).child("Amount").setValue(-amount);
-                    myRef.child("Users").child(userDebt).child("Friends").child(userCred).child("Username").setValue(name);
+
                 }
 
             }
@@ -74,37 +74,64 @@ public class DatabaseUtils {
         return approvalStatus;
     }
 
+    private double sum = 0;
+    private double debts = 0;
+
+    double[] totalSum(final String phoneNumber) {
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Iterable<DataSnapshot> friends = dataSnapshot.child("Users").child(phoneNumber).child("Friends").getChildren();
+                while (friends.iterator().hasNext()) {
+                    double cur = (double) friends.iterator().next().child("Amount").getValue();
+                    if (cur > 0) {
+                        sum += cur;
+                    } else {
+                        debts += cur;
+                    }
+                }
+            }
 
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-
-
+            }
+        });
+        double[] credDebt = {sum, debts};
+        sum = 0;
+        debts = 0;
+        return credDebt;
 
         //Date, amount, people involved, approval status for each person
     }
+}
 
-    class Transaction {
+class Transaction {
 
-        double amount;
-        String[] peopleInvolved;
-        String time;
+    double amount;
+    String[] peopleInvolved;
+    String time;
 
-        Transaction(double amountx, String[] peopleInvolvedx, String[] namesx, String timex) {
-            amount = amountx;
-            peopleInvolved = peopleInvolvedx;
-            time = timex;
+    Transaction(double amountx, String[] peopleInvolvedx, String timex) {
+        amount = amountx;
+        peopleInvolved = peopleInvolvedx;
+        time = timex;
+    }
+
+
+    public void addTransactionFirebase(DatabaseReference myRef) {
+        for (int i = 0; i < peopleInvolved.length; i++) {
+            myRef.child("Users").child(peopleInvolved[0]).child("Transactions").child(time).child("PeopleInvolved").child(peopleInvolved[i]).child("AmountOwed").child(peopleInvolved[i]).setValue(amount);
+            myRef.child("Users").child(peopleInvolved[0]).child("Transactions").child(time).child("PeopleInvolved").child(peopleInvolved[i]).child("ApprovalStatus").setValue(false);
         }
-
-
-        public void addTransactionFirebase(DatabaseReference myRef) {
-            for (int i = 0; i < peopleInvolved.length; i++) {
-                myRef.child("Users").child(peopleInvolved[0]).child("Transactions").child(time).child("PeopleInvolved").child(peopleInvolved[i]).child("AmountOwed").child(peopleInvolved[i]).setValue(amount);
-                myRef.child("Users").child(peopleInvolved[0]).child("Transactions").child(time).child("PeopleInvolved").child(peopleInvolved[i]).child("ApprovalStatus").setValue(false);
-            }
-
-        }
-
 
     }
+
+
+}
 
 
