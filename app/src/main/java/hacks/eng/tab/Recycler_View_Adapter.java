@@ -46,9 +46,6 @@ public class Recycler_View_Adapter extends RecyclerView.Adapter<View_Holder> {
             holder.description.setText("$" + list.get(position).amount);
         }
         holder.imageView.setImageResource(list.get(position).imageId);
-
-        //animate(holder);
-
     }
 
     @Override
