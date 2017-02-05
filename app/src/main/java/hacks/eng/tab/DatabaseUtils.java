@@ -31,6 +31,37 @@ public class DatabaseUtils {
         transaction.addTransactionFirebase(myRef);
     }
 
+    void updateRequestedAmount(final String userDebt, final String userCred, final double amount) {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.child("Users").child(userCred).child("Friends").hasChild(userDebt)) {
+                    double amountCur = dataSnapshot.child("Users").child(userCred).child("Friends").child(userDebt).child("RequestedAmount").getValue(Double.class);
+                    myRef.child("Users").child(userCred).child("Friends").child(userDebt).child("RequestedAmount").setValue(amountCur + amount);
+                } else {
+                    myRef.child("Users").child(userCred).child("Friends").child(userDebt).child("RequestedAmount").setValue(amount);
+
+                }
+                if (dataSnapshot.child("Users").child(userDebt).child("Friends").hasChild(userCred)) {
+                    double amountCur = dataSnapshot.child("Users").child(userDebt).child("Friends").child(userCred).child("RequestedAmount").getValue(Double.class);
+                    myRef.child("Users").child(userDebt).child("Friends").child(userCred).child("RequestedAmount").setValue(amountCur - amount);
+                } else {
+                    myRef.child("Users").child(userDebt).child("Friends").child(userCred).child("RequestedAmount").setValue(-amount);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+    }
+
+
+
     void updateAmount(final String userDebt, final String userCred, final double amount) {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -62,7 +93,7 @@ public class DatabaseUtils {
 
     public boolean approvalStatus = false;
 
-    boolean getApprovalStatus(final String curUser, final String findUser) {
+    void getApprovalStatus(final String curUser, final String findUser) {
 
 
 
@@ -70,6 +101,11 @@ public class DatabaseUtils {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 approvalStatus = (boolean) dataSnapshot.child("Users").child(curUser).child("Friends").child(findUser).child("ApprovalStatus").getValue();
+                if(approvalStatus){
+                    double amountCur = dataSnapshot.child("Users").child(curUser).child("Friends").child(findUser).child("RequestedAmount").getValue(Double.class);
+                    updateAmount(curUser,findUser,amountCur);
+                    updateAmount(findUser,curUser,-amountCur);
+                }
 
             }
 
@@ -78,7 +114,7 @@ public class DatabaseUtils {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
-        return approvalStatus;
+
     }
 
 
