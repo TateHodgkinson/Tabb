@@ -165,7 +165,7 @@ public class DebtsFragment extends Fragment {
 
         List<Data> data = new ArrayList<>();
 
-        data.add(new Data("Willam", "All 5% Precent", R.mipmap.ic_launcher));
+        data.add(new Data("Willam", "All 5% Percent", R.mipmap.ic_launcher));
         data.add(new Data("Tate", "Huge Cunt Master", R.mipmap.ic_launcher));
         data.add(new Data("Nathan", "Small Dude", R.mipmap.ic_launcher));
         data.add(new Data("Joseph", "I like bondage", R.mipmap.ic_launcher));

@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
     }
 
 
-    public void launchAddDebtDialog(int total, HashMap<String, String> contacts) {
+    public void launchAddDebtDialog(double total, HashMap<String, String> contacts) {
         android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
         android.app.Fragment prev = getFragmentManager().findFragmentByTag("debtDialog");
         if (prev != null) {
@@ -383,8 +383,8 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
             }
 
             protected void onPostExecute(String result) {
-                //TODO mImageDetails.setText(result);
-                System.out.println(result);
+                result = result.replace("$","");
+                launchAddDebtDialog(Double.valueOf(result), new HashMap<String, String>());
             }
         }.execute();
     }

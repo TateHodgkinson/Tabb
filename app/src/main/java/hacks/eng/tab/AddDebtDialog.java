@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -43,7 +44,7 @@ public class AddDebtDialog extends DialogFragment {
     public static final int PICK_CONTACT = 10;
 
     // TODO: Rename and change types of parameters
-    private int total;
+    private double total;
     private HashMap<String,String> contacts;
 
 
@@ -60,10 +61,10 @@ public class AddDebtDialog extends DialogFragment {
      * @param contacts The friends that are being shared with
      * @return A new instance of fragment AddDebtDialog.
      */
-    public static AddDebtDialog newInstance(int total, HashMap<String,String> contacts) {
+    public static AddDebtDialog newInstance(double total, HashMap<String,String> contacts) {
         AddDebtDialog fragment = new AddDebtDialog();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, total);
+        args.putDouble(ARG_PARAM1, total);
         args.putSerializable(ARG_PARAM2, contacts);
         fragment.setArguments(args);
         return fragment;
@@ -73,7 +74,7 @@ public class AddDebtDialog extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            total = getArguments().getInt(ARG_PARAM1);
+            total = getArguments().getDouble(ARG_PARAM1);
             contacts = (HashMap<String, String>) getArguments().getSerializable(ARG_PARAM2);
         }
     }
@@ -121,6 +122,9 @@ public class AddDebtDialog extends DialogFragment {
         }
         ListAdapter listAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, strings);
         list.setAdapter(listAdapter);
+
+        EditText text = (EditText)view.findViewById(R.id.editTextDialog);
+        text.setText("" + total);
         return builder.create();
     }
 
