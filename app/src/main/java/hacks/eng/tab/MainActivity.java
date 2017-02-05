@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
+            // Show 2 total pages.
             return 2;
         }
 
