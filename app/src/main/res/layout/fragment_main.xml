@@ -2,14 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@color/White"
     tools:context="hacks.eng.tab.MainFragment">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Credit:"
-        android:textColor="#FFF8DC"
+        android:textColor="@color/Black"
         android:textSize="180px"
         android:ems="10"
         android:gravity="center"
@@ -20,59 +20,43 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <View
-        android:id="@+id/bottom_background"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dummy"
-        android:layout_alignParentBottom="true"
-        android:background="#DC143C" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Debt:"
-        android:textColor="#FFF8DC"
+        android:textColor="@color/Black"
         android:ems="10"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="180px"
         android:id="@+id/Debt"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/dummy"
+        android:layout_below="@+id/Credit_Amount"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <TextView
         android:text="$100"
-        android:textColor="#FFF8DC"
+        android:textColor="@color/MaterialRed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="200px"
-        android:id="@+id/textView5"
+        android:id="@+id/Debt_Amount"
+        android:background="@drawable/border"
         android:layout_below="@+id/Debt"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="140px"
-        android:id="@+id/dummy"
-        android:layout_marginTop="61dp"
-        android:layout_alignTop="@+id/Credit_Amount"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
         android:text="$1000"
-        android:textColor="#FFF8DC"
+        android:textColor="@color/MaterialGreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="200px"
         android:id="@+id/Credit_Amount"
+        android:background="@drawable/border"
         android:layout_marginTop="37dp"
         android:layout_below="@+id/Credit"
         android:layout_centerHorizontal="true" />

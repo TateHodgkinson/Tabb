@@ -9,4 +9,9 @@
     <string name="dialog_select_gallery">Gallery</string>
 
     <string name="image_picker_error">Something is wrong with that image. Pick a different one please.</string>
+
+    <string name="dialog"> Complete Payment fragment</string>
+    <string name="clear">clear fragment</string>
+    <string name="cancel">Hello blank cancel </string>
+
 </resources>
