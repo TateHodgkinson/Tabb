@@ -77,9 +77,9 @@ public class DatabaseUtils {
     private double sum = 0;
     private double debts = 0;
 
-    double[] totalSum(final String phoneNumber) {
+    void totalSum(final String phoneNumber) {
 
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -92,6 +92,8 @@ public class DatabaseUtils {
                     } else {
                         debts += cur;
                     }
+
+                    MainFragment.instance.updateTextViews(sum,debts);
                 }
             }
 
@@ -101,10 +103,6 @@ public class DatabaseUtils {
 
             }
         });
-        double[] credDebt = {sum, debts};
-        sum = 0;
-        debts = 0;
-        return credDebt;
 
         //Date, amount, people involved, approval status for each person
     }
