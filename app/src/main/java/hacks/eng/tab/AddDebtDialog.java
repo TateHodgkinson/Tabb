@@ -105,7 +105,7 @@ public class AddDebtDialog extends DialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        View view = inflater.inflate(R.layout.fragment_add_debt, null);
+       final View view = inflater.inflate(R.layout.fragment_add_debt, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view)
                 .setTitle("Add Debt")
@@ -119,8 +119,10 @@ public class AddDebtDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Submit Data
-                        runTransaction();
-                        addCred();
+                        EditText text = (EditText)view.findViewById(R.id.editTextDialog);
+                        double total = Double.valueOf(text.getText().toString());
+                        runTransaction(total);
+                        addCred(total);
                     }
                 })
                 .setNegativeButton("Cancel", null);
@@ -138,7 +140,7 @@ public class AddDebtDialog extends DialogFragment {
         return builder.create();
     }
 
-    void runTransaction() {
+    void runTransaction(double total) {
 
         double amount = total / phoneNumbers.length;
         String[] people = phoneNumbers;
@@ -155,10 +157,10 @@ public class AddDebtDialog extends DialogFragment {
 
     }
 
-    void addCred() {
+    void addCred(double total) {
         String userCred = phoneNumbers[0];
 
-        for(int i = 0; i < phoneNumbers.length; i++) {
+        for(int i = 1; i < phoneNumbers.length; i++) {
             double amount = total / phoneNumbers.length;
             String userDebt = phoneNumbers[i];
             FirebaseDatabase database = FirebaseDatabase.getInstance();
