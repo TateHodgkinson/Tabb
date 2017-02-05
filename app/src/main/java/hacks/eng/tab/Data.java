@@ -5,13 +5,13 @@ package hacks.eng.tab;
  */
 
 public class Data {
-    public String title;
-    public String description;
+    public String name;
+    public double amount;
     public int imageId;
 
-    Data(String title, String description, int imageId) {
-        this.title = title;
-        this.description = description;
+    Data(String name, double amount, int imageId) {
+        this.name = name;
+        this.amount = amount;
         this.imageId = imageId;
     }
 }

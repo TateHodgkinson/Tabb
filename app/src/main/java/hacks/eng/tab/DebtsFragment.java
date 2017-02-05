@@ -35,7 +35,8 @@ import java.util.List;
  */
 public class DebtsFragment extends Fragment {
 
-    String amount = "0";
+    String temp_amount = "0";
+    List<Data> data;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +66,7 @@ public class DebtsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // create recycled viewed
         View v = inflater.inflate(R.layout.fragment_debts, container, false);
-        List<Data> data = fill_with_data();
+        data = fill_with_data();
 
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.cardList);
         Recycler_View_Adapter adapter = new Recycler_View_Adapter(data, getContext());
@@ -95,7 +96,7 @@ public class DebtsFragment extends Fragment {
                                     public void onClick(DialogInterface dialog,int id) {
                                         // get user input and set it to result
                                         // edit text
-                                        amount = (userInput.getText()).toString();
+                                        temp_amount = (userInput.getText()).toString();
                                     }
                                 })
                         .setNegativeButton("Cancel",
@@ -165,14 +166,14 @@ public class DebtsFragment extends Fragment {
 
         List<Data> data = new ArrayList<>();
 
-        data.add(new Data("Willam", "All 5% Precent", R.mipmap.ic_launcher));
-        data.add(new Data("Tate", "Huge Cunt Master", R.mipmap.ic_launcher));
-        data.add(new Data("Nathan", "Small Dude", R.mipmap.ic_launcher));
-        data.add(new Data("Joseph", "I like bondage", R.mipmap.ic_launcher));
-        data.add(new Data("Jack", "Stole your bitch", R.mipmap.ic_launcher));
-        data.add(new Data("Jamie", "Physcopathic suicdal mess", R.mipmap.ic_launcher));
-        data.add(new Data("Ryan", "Confused", R.mipmap.ic_launcher));
-        data.add(new Data("Abhinav", "Shirtless", R.mipmap.ic_launcher));
+        data.add(new Data("Willam", -50.00, R.mipmap.ic_launcher));
+        data.add(new Data("Tate", 25.00, R.mipmap.ic_launcher));
+        data.add(new Data("Nathan", 6.00, R.mipmap.ic_launcher));
+        data.add(new Data("Joseph", 15.00, R.mipmap.ic_launcher));
+        data.add(new Data("Jack", 22.00, R.mipmap.ic_launcher));
+        data.add(new Data("Jamie", -25.00, R.mipmap.ic_launcher));
+        data.add(new Data("Ryan", -20.00, R.mipmap.ic_launcher));
+        data.add(new Data("Abhinav", 40.00, R.mipmap.ic_launcher));
 
 
         return data;

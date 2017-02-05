@@ -1,13 +1,14 @@
 package hacks.eng.tab;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.Collections;
 import java.util.List;
+
 
 /**
  * Created by abhi on 2017-02-04.
@@ -36,8 +37,14 @@ public class Recycler_View_Adapter extends RecyclerView.Adapter<View_Holder> {
     public void onBindViewHolder(View_Holder holder, int position) {
 
         //Use the provided View Holder on the onCreateViewHolder method to populate the current row on the RecyclerView
-        holder.title.setText(list.get(position).title);
-        holder.description.setText(list.get(position).description);
+        holder.title.setText(list.get(position).name);
+        if(list.get(position).amount<0) {
+            holder.description.setText("$" + list.get(position).amount*-1);
+            holder.description.setTextColor(Color.RED);
+
+        }else{
+            holder.description.setText("$" + list.get(position).amount);
+        }
         holder.imageView.setImageResource(list.get(position).imageId);
 
         //animate(holder);
