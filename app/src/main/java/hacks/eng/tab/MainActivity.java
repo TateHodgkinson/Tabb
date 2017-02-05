@@ -1,6 +1,7 @@
 package hacks.eng.tab;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -118,7 +120,11 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
                 animateFAB();
                 break;
             case R.id.add_manual:
-                launchAddDebtDialog(0, null, null);
+                String[] name = {"You"};
+                TelephonyManager tm = (TelephonyManager)this.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+                String myPhoneNumber =  tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
+                String[] phoneNumber = {myPhoneNumber};
+                launchAddDebtDialog(0,name, phoneNumber);
                 break;
             case R.id.add_photo:
                 addReceiptPhoto();
@@ -253,13 +259,17 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
                 data.hasExtra(ContactPickerActivity.RESULT_CONTACT_DATA)) {
             List<Contact> contacts = (List<Contact>) data.getSerializableExtra(ContactPickerActivity.RESULT_CONTACT_DATA);
             System.out.println("GOT CONTACTS: " + contacts.size());
-            String[] names = new String[contacts.size()];
-            String[] phoneNumbers = new String[contacts.size()];
+            String[] names = new String[contacts.size()+1];
+            String[] phoneNumbers = new String[contacts.size()+1];
+            names[0] = "You";
+            TelephonyManager tm = (TelephonyManager)this.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+            String myPhoneNumber =  tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
+            phoneNumbers[0] = myPhoneNumber;
             for (int i = 0; i < contacts.size(); i++) {
                 Contact contact = contacts.get(i);
-                names[i] = contact.getDisplayName();
+                names[i+1] = contact.getDisplayName();
                 String phone = contact.getPhone(ContactsContract.CommonDataKinds.Phone.TYPE_WORK);
-                phoneNumbers[i] = phone.substring(phone.length() - 10);
+                phoneNumbers[i+1] = phone.substring(phone.length() - 10);
             }
             launchAddDebtDialog(0, names, phoneNumbers);
         }
