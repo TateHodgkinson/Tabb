@@ -1,8 +1,12 @@
 package hacks.eng.tab;
 
+import android.util.Log;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 /**
@@ -12,13 +16,12 @@ import com.google.firebase.database.ValueEventListener;
 public class DatabaseUtils {
 
 
-    public boolean approvalStatus = false;
     DatabaseReference myRef;
-
 
     DatabaseUtils(DatabaseReference myDatabase) {
         myRef = myDatabase;
     }
+
 
     void performTransaction(Transaction transaction) {
         transaction.addTransactionFirebase(myRef);
@@ -53,6 +56,8 @@ public class DatabaseUtils {
         });
     }
 
+    public boolean approvalStatus = false;
+
     boolean getApprovalStatus(final String curUser, final String findUser) {
         myRef.addValueEventListener(new ValueEventListener() {
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -69,25 +74,25 @@ public class DatabaseUtils {
         return approvalStatus;
     }
 
+    private double sum = 0;
+    private double debts = 0;
 
-    public void totalSum(final String phoneNumber) {
+    double[] totalSum(final String phoneNumber) {
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                double sum = 0;
-                double debts = 0;
+
                 Iterable<DataSnapshot> friends = dataSnapshot.child("Users").child(phoneNumber).child("Friends").getChildren();
                 while (friends.iterator().hasNext()) {
-                    double cur = (double) friends.iterator().next().child("Amount").getValue(Double.class);
+                    double cur = (double) friends.iterator().next().child("Amount").getValue();
                     if (cur > 0) {
                         sum += cur;
                     } else {
                         debts += cur;
                     }
                 }
-                MainFragment.instance.updateTextViews(sum, debts);
             }
 
 
@@ -96,6 +101,11 @@ public class DatabaseUtils {
 
             }
         });
+        double[] credDebt = {sum, debts};
+        sum = 0;
+        debts = 0;
+        return credDebt;
+
         //Date, amount, people involved, approval status for each person
     }
 }
