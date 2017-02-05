@@ -121,7 +121,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.add_manual:
                 String[] name = {"You"};
                 TelephonyManager tm = (TelephonyManager) this.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-                String myPhoneNumber = tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
+                String temp = tm.getLine1Number().replaceAll("\\(","").replaceAll("\\)","").replaceAll(" ", "");
+                String myPhoneNumber = temp.substring(temp.length() - 10);
                 String[] phoneNumber = {myPhoneNumber};
                 launchAddDebtDialog(0, name, phoneNumber);
                 break;
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void addReceiptPhoto() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(getLayoutInflater().inflate(R.layout.add_receipt_photo, null))
+        builder
                 .setMessage(R.string.dialog_select_prompt)
                 .setPositiveButton(R.string.dialog_select_gallery, new DialogInterface.OnClickListener() {
                     @Override
@@ -257,7 +258,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String[] phoneNumbers = new String[contacts.size() + 1];
             names[0] = "You";
             TelephonyManager tm = (TelephonyManager) this.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-            String myPhoneNumber = tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
+            String temp = tm.getLine1Number().replaceAll("\\(","").replaceAll("\\)","").replaceAll(" ", "");
+            String myPhoneNumber = temp.substring(temp.length() - 10);
             phoneNumbers[0] = myPhoneNumber;
             for (int i = 0; i < contacts.size(); i++) {
                 Contact contact = contacts.get(i);
@@ -396,7 +398,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String[] phoneNumbers = new String[1];
                 names[0] = "You";
                 TelephonyManager tm = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-                String myPhoneNumber = tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
+                String temp = tm.getLine1Number().replaceAll("\\(","").replaceAll("\\)","").replaceAll(" ", "");
+                String myPhoneNumber = temp.substring(temp.length() - 10);
                 phoneNumbers[0] = myPhoneNumber;
 
                 try {
