@@ -316,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
 
     private void callCloudVision(final Bitmap bitmap) throws IOException {
         // Switch text to loading
-        //TODO  mImageDetails.setText(R.string.loading_message);
+        Toast.makeText(this, "Processing Image", Toast.LENGTH_SHORT).show();
 
         // Do the real work in an async task, because we need to use the network anyway
         new AsyncTask<Object, Void, String>() {
@@ -398,7 +398,20 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
             }
 
             protected void onPostExecute(String result) {
-                System.out.println("POST: " + result);
+                String[] names = new String[1];
+                String[] phoneNumbers = new String[1];
+                names[0] = "You";
+                TelephonyManager tm = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+                String myPhoneNumber =  tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
+                phoneNumbers[0] = myPhoneNumber;
+
+                try{
+                    launchAddDebtDialog(Double.valueOf(result),names, phoneNumbers);
+                }catch (Exception e){
+                    launchAddDebtDialog(0,names,phoneNumbers);
+                }
+
+
             }
         }.execute();
     }
@@ -448,7 +461,7 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
                         }
                         System.out.println(count);
                         if (count == 4) {
-                            return number.getDescription();
+                            return number.getDescription().replaceAll("$","");
                         }
                     }
                 }
@@ -456,7 +469,7 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
             }
         }
 
-        return "Could not find total";
+        return "0";
     }
 
     /**
