@@ -106,7 +106,7 @@ public class DebtsFragment extends Fragment {
 
         recyclerView.addOnItemTouchListener(new CustomRVItemTouchListener(this.getContext(), recyclerView, new RecyclerViewItemClickListener() {
             @Override
-            public void onClick(View view, int position) {
+            public void onClick(View view, final int position) {
                 // only if value is a debit, than can you pay money towards it
                 if (data.get(position).amount < 0) {
                     LayoutInflater li = LayoutInflater.from(getContext());
@@ -130,6 +130,7 @@ public class DebtsFragment extends Fragment {
                                             // get user input and set it to result
                                             // edit text
                                             temp_amount = (userInput.getText()).toString();
+                                            //updateRequestedAmount(data.get(position).name, )
                                         }
                                     })
                             .setNegativeButton("Cancel",
