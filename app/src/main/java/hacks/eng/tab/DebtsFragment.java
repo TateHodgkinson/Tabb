@@ -163,12 +163,13 @@ public class DebtsFragment extends Fragment {
         int size = adapter.list.size();
 
             if(!modified) {
-                adapter.insert(size, new Data(getContactName(getContext(), data.name), data.amount, R.mipmap.ic_launcher));
+                adapter.insert(0, new Data(getContactName(getContext(), data.name), data.amount, R.mipmap.ic_launcher));
             }else{
                 for(int i = 0; i < adapter.list.size(); i++){
-                    if(data.name.equals(adapter.list.get(i).name)){
+                    if(getContactName(getContext(), data.name).equals(adapter.list.get(i).name)){
                         adapter.remove(adapter.list.get(i));
-                        adapter.insert(size,new Data(getContactName(getContext(), data.name), data.amount, R.mipmap.ic_launcher));
+                        Log.d("FIND THIS", data.amount + "");
+                        adapter.insert(0,new Data(getContactName(getContext(), data.name), data.amount, R.mipmap.ic_launcher));
                     }
                 }
 
