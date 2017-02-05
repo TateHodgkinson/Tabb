@@ -76,42 +76,44 @@ public class DebtsFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new CustomRVItemTouchListener(this.getContext(), recyclerView, new RecyclerViewItemClickListener() {
             @Override
             public void onClick(View view, int position) {
-                LayoutInflater li = LayoutInflater.from(getContext());
-                View promptsView = li.inflate(R.layout.clear_debts_dialog, null);
+                // only if value is a debit, than can you pay money towards it
+                if(data.get(position).amount<0) {
+                    LayoutInflater li = LayoutInflater.from(getContext());
+                    View promptsView = li.inflate(R.layout.clear_debts_dialog, null);
 
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                        getContext());
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            getContext());
 
-                // set prompts.xml to alertdialog builder
-                alertDialogBuilder.setView(promptsView);
+                    // set prompts.xml to alertdialog builder
+                    alertDialogBuilder.setView(promptsView);
 
-                final EditText userInput = (EditText) promptsView
-                        .findViewById(R.id.editTextDialog);
+                    final EditText userInput = (EditText) promptsView
+                            .findViewById(R.id.editTextDialog);
 
-                // set dialog message
-                alertDialogBuilder
-                        .setCancelable(false)
-                        .setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-                                        // get user input and set it to result
-                                        // edit text
-                                        temp_amount = (userInput.getText()).toString();
-                                    }
-                                })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-                                        dialog.cancel();
-                                    }
-                                });
+                    // set dialog message
+                    alertDialogBuilder
+                            .setCancelable(false)
+                            .setPositiveButton("OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            // get user input and set it to result
+                                            // edit text
+                                            temp_amount = (userInput.getText()).toString();
+                                        }
+                                    })
+                            .setNegativeButton("Cancel",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
 
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
 
-                // show it
-                alertDialog.show();
-
+                    // show it
+                    alertDialog.show();
+                }
             }
 
             @Override
