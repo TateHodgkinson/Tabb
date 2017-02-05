@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -168,15 +169,10 @@ public class DebtsFragment extends Fragment {
     public List<Data> fill_with_data() {
 
         List<Data> data = new ArrayList<>();
-        data.add(new Data("Willam", -50.00, R.mipmap.ic_launcher));
-        data.add(new Data("Tate", 25.00, R.mipmap.ic_launcher));
-        data.add(new Data("Nathan", 6.00, R.mipmap.ic_launcher));
-        data.add(new Data("Joseph", 15.00, R.mipmap.ic_launcher));
-        data.add(new Data("Jack", 22.00, R.mipmap.ic_launcher));
-        data.add(new Data("Jamie", -25.00, R.mipmap.ic_launcher));
-        data.add(new Data("Ryan", -20.00, R.mipmap.ic_launcher));
-        //data.add(new Data(getContactName(getContext(), "1111111111"), 40.00, R.mipmap.ic_launcher));
 
+        TelephonyManager tm = (TelephonyManager) getActivity().getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        String myPhoneNumber = tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
+        
         return data;
     }
 
