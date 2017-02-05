@@ -405,6 +405,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 try {
                     launchAddDebtDialog(Double.valueOf(result), names, phoneNumbers);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     launchAddDebtDialog(0, names, phoneNumbers);
                 }
 
@@ -458,7 +459,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                         System.out.println(count);
                         if (count == 4) {
-                            return number.getDescription().replaceAll("$", "");
+                            return number.getDescription().replaceAll("\\$", "");
                         }
                     }
                 }
