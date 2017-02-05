@@ -39,13 +39,15 @@ public class AddDebtDialog extends DialogFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "TOTAL";
-    private static final String ARG_PARAM2 = "CONTACTS";
+    private static final String ARG_PARAM2 = "NAMES";
+    private static final String ARG_PARAM3 = "PHONES";
 
     public static final int PICK_CONTACT = 10;
 
     // TODO: Rename and change types of parameters
     private double total;
-    private HashMap<String,String> contacts;
+    private String[] names;
+    private String[] phoneNumbers;
 
 
     public AddDebtDialog() {
@@ -58,14 +60,15 @@ public class AddDebtDialog extends DialogFragment {
      * this fragment using the provided parameters.
      *
      * @param total    The total cost of the debt
-     * @param contacts The friends that are being shared with
+     * @param names The friends that are being shared with
      * @return A new instance of fragment AddDebtDialog.
      */
-    public static AddDebtDialog newInstance(double total, HashMap<String,String> contacts) {
+    public static AddDebtDialog newInstance(double total, String[] names, String[] phoneNumbers) {
         AddDebtDialog fragment = new AddDebtDialog();
         Bundle args = new Bundle();
         args.putDouble(ARG_PARAM1, total);
-        args.putSerializable(ARG_PARAM2, contacts);
+        args.putStringArray(ARG_PARAM2, names);
+        args.putStringArray(ARG_PARAM3, phoneNumbers);
         fragment.setArguments(args);
         return fragment;
     }
@@ -75,7 +78,8 @@ public class AddDebtDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             total = getArguments().getDouble(ARG_PARAM1);
-            contacts = (HashMap<String, String>) getArguments().getSerializable(ARG_PARAM2);
+            names = getArguments().getStringArray(ARG_PARAM2);
+            phoneNumbers = getArguments().getStringArray(ARG_PARAM3);
         }
     }
 
@@ -117,8 +121,8 @@ public class AddDebtDialog extends DialogFragment {
 
         ListView list = (ListView) view.findViewById(R.id.listView);
         ArrayList<String> strings = new ArrayList<>();
-        for(String key : contacts.keySet()){
-            strings.add(key + " " + contacts.get(key));
+        for(int i = 0; names != null && i < names.length; i++){
+            strings.add(names[i] + " " + phoneNumbers[i]);
         }
         ListAdapter listAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, strings);
         list.setAdapter(listAdapter);
