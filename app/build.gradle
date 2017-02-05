@@ -31,5 +31,8 @@ dependencies {
     compile 'com.google.apis:google-api-services-vision:v1-rev2-1.21.0'
     compile 'com.android.support:cardview-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
+
+    compile 'com.1gravity:android-contactpicker:1.2.0'
+
     testCompile 'junit:junit:4.12'
 }
