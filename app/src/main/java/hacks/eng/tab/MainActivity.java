@@ -10,11 +10,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
-public class MainActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, DebtsFragment.OnFragmentInteractionListener, MainFragment.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, DebtsFragment.OnFragmentInteractionListener, MainFragment.OnFragmentInteractionListener, View.OnClickListener{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -30,6 +33,9 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private FloatingActionButton add_button,add_manual,add_photo;
+    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
+    private Boolean isFabOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,17 +53,39 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        add_button = (FloatingActionButton) findViewById(R.id.add_button);
+        add_manual = (FloatingActionButton) findViewById(R.id.add_manual);
+        add_photo = (FloatingActionButton) findViewById(R.id.add_photo);
+
+
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
+        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward);
+        add_button.setOnClickListener(this);
+        add_manual.setOnClickListener(this);
+        add_photo.setOnClickListener(this);
 
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id){
+            case R.id.add_button:
+
+                animateFAB();
+                break;
+            case R.id.add_manual:
+
+                Log.d("Raj", "Fab 1");
+                break;
+            case R.id.add_photo:
+
+                Log.d("Raj", "Fab 2");
+                break;
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -130,6 +158,30 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
                     return "SECTION 3";
             }
             return null;
+        }
+    }
+    public void animateFAB(){
+
+        if(isFabOpen){
+
+            add_button.startAnimation(rotate_backward);
+            add_manual.startAnimation(fab_close);
+            add_photo.startAnimation(fab_close);
+            add_manual.setClickable(false);
+            add_photo.setClickable(false);
+            isFabOpen = false;
+            Log.d("Raj", "close");
+
+        } else {
+
+            add_button.startAnimation(rotate_forward);
+            add_manual.startAnimation(fab_open);
+            add_photo.startAnimation(fab_open);
+            add_manual.setClickable(true);
+            add_photo.setClickable(true);
+            isFabOpen = true;
+            Log.d("Raj","open");
+
         }
     }
 }
