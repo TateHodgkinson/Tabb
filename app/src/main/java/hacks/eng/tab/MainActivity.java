@@ -10,13 +10,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -34,7 +31,6 @@ import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.api.services.vision.v1.Vision;
 import com.google.api.services.vision.v1.VisionRequest;
 import com.google.api.services.vision.v1.VisionRequestInitializer;
@@ -122,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
                 animateFAB();
                 break;
             case R.id.add_manual:
-                launchAddDebtDialog(0,new HashMap<String, String>());
+                launchAddDebtDialog(0, new HashMap<String, String>());
                 break;
             case R.id.add_photo:
                 addReceiptPhoto();
@@ -133,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
 
     private void addReceiptPhoto() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder .setView(getLayoutInflater().inflate(R.layout.add_receipt_photo, null))
+        builder.setView(getLayoutInflater().inflate(R.layout.add_receipt_photo, null))
                 .setMessage(R.string.dialog_select_prompt)
                 .setPositiveButton(R.string.dialog_select_gallery, new DialogInterface.OnClickListener() {
                     @Override
@@ -178,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
     }
 
 
-    public void launchAddDebtDialog(int total, HashMap<String, String> contacts){
+    public void launchAddDebtDialog(int total, HashMap<String, String> contacts) {
         android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
         android.app.Fragment prev = getFragmentManager().findFragmentByTag("debtDialog");
         if (prev != null) {
@@ -187,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
         ft.addToBackStack(null);
 
         // Create and show the dialog.
-        android.app.DialogFragment newFragment = AddDebtDialog.newInstance(total,contacts);
+        android.app.DialogFragment newFragment = AddDebtDialog.newInstance(total, contacts);
         newFragment.show(ft, "debtDialog");
     }
 
@@ -245,15 +241,17 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("STUFF");
         super.onActivityResult(requestCode, resultCode, data);
-
+        System.out.println("ACTIVITY RESULT " + requestCode);
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             uploadImage(data.getData());
         } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
             uploadImage(Uri.fromFile(getCameraFile()));
-        }else if (requestCode == AddDebtDialog.PICK_CONTACT && resultCode == RESULT_OK  &&
-                data != null && data.hasExtra(ContactPickerActivity.RESULT_CONTACT_DATA)){
+        } else if (requestCode == AddDebtDialog.PICK_CONTACT && resultCode == RESULT_OK && data != null &&
+                data.hasExtra(ContactPickerActivity.RESULT_CONTACT_DATA)) {
             List<Contact> contacts = (List<Contact>) data.getSerializableExtra(ContactPickerActivity.RESULT_CONTACT_DATA);
+            System.out.println("GOT CONTACTS: " + contacts.size());
             HashMap<String, String> stuff = new HashMap<>();
             for (Contact contact : contacts) {
                 stuff.put(contact.getDisplayName(), contact.getPhone(ContactsContract.CommonDataKinds.Phone.TYPE_WORK));

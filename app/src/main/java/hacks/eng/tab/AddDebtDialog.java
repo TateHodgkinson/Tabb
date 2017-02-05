@@ -12,13 +12,21 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
+import com.onegravity.contactpicker.contact.Contact;
 import com.onegravity.contactpicker.contact.ContactDescription;
 import com.onegravity.contactpicker.contact.ContactSortOrder;
 import com.onegravity.contactpicker.core.ContactPickerActivity;
 import com.onegravity.contactpicker.picture.ContactPictureType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -32,7 +40,7 @@ public class AddDebtDialog extends DialogFragment {
     private static final String ARG_PARAM1 = "TOTAL";
     private static final String ARG_PARAM2 = "CONTACTS";
 
-    public static final int PICK_CONTACT = 2;
+    public static final int PICK_CONTACT = 10;
 
     // TODO: Rename and change types of parameters
     private int total;
@@ -79,8 +87,9 @@ public class AddDebtDialog extends DialogFragment {
                 .putExtra(ContactPickerActivity.EXTRA_CONTACT_DESCRIPTION, ContactDescription.ADDRESS.name())
                 .putExtra(ContactPickerActivity.EXTRA_CONTACT_DESCRIPTION_TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
                 .putExtra(ContactPickerActivity.EXTRA_CONTACT_SORT_ORDER, ContactSortOrder.AUTOMATIC.name());
-        startActivityForResult(intent, PICK_CONTACT);
+        getActivity().startActivityForResult(intent, PICK_CONTACT);
     }
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstance){
@@ -105,6 +114,13 @@ public class AddDebtDialog extends DialogFragment {
                 })
                 .setNegativeButton("Cancel",null);
 
+        ListView list = (ListView) view.findViewById(R.id.listView);
+        ArrayList<String> strings = new ArrayList<>();
+        for(String key : contacts.keySet()){
+            strings.add(key + " " + contacts.get(key));
+        }
+        ListAdapter listAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, strings);
+        list.setAdapter(listAdapter);
         return builder.create();
     }
 
