@@ -86,7 +86,7 @@ public class DatabaseUtils {
 
                 Iterable<DataSnapshot> friends = dataSnapshot.child("Users").child(phoneNumber).child("Friends").getChildren();
                 while (friends.iterator().hasNext()) {
-                    double cur = (double) friends.iterator().next().child("Amount").getValue();
+                    double cur = (double) friends.iterator().next().child("Amount").getValue(Double.class);
                     if (cur > 0) {
                         sum += cur;
                     } else {
