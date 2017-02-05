@@ -74,8 +74,7 @@ public class DatabaseUtils {
         return approvalStatus;
     }
 
-    private double sum = 0;
-    private double debts = 0;
+
 
     void totalSum(final String phoneNumber) {
 
@@ -83,7 +82,8 @@ public class DatabaseUtils {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                double sum = 0;
+                double debts = 0;
                 Iterable<DataSnapshot> friends = dataSnapshot.child("Users").child(phoneNumber).child("Friends").getChildren();
                 while (friends.iterator().hasNext()) {
                     double cur = (double) friends.iterator().next().child("Amount").getValue(Double.class);
