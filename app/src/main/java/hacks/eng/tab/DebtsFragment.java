@@ -107,62 +107,62 @@ public class DebtsFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new CustomRVItemTouchListener(this.getContext(), recyclerView, new RecyclerViewItemClickListener() {
             @Override
             public void onClick(View view, final int position) {
-                // only if value is a debit, than can you pay money towards it
-                if (data.get(position).amount < 0) {
-                    LayoutInflater li = LayoutInflater.from(getContext());
-                    View promptsView = li.inflate(R.layout.clear_debts_dialog, null);
-
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                            getContext());
-
-                    // set prompts.xml to alertdialog builder
-                    alertDialogBuilder.setView(promptsView);
-
-                    final EditText userInput = (EditText) promptsView
-                            .findViewById(R.id.editTextDialog);
-
-                    // set dialog message
-                    alertDialogBuilder
-                            .setCancelable(false)
-                            .setPositiveButton("OK",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // get user input and set it to result
-                                            // edit text
-                                            temp_amount = (userInput.getText()).toString();
-                                            //updateRequestedAmount(data.get(position).name, )
-                                        }
-                                    })
-                            .setNegativeButton("Cancel",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    });
-
-                    // create alert dialog
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-
-                    // show it
-                    alertDialog.show();
-                }else{
-
-                    new AlertDialog.Builder(getContext())
-                            .setTitle("Confirm Payment")
-                            .setMessage("Are you sure you want to confirm?")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // continue with delete
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // do nothing
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
-                }
+//                // only if value is a debit, than can you pay money towards it
+//                if (data.get(position).amount < 0) {
+//                    LayoutInflater li = LayoutInflater.from(getContext());
+//                    View promptsView = li.inflate(R.layout.clear_debts_dialog, null);
+//
+//                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+//                            getContext());
+//
+//                    // set prompts.xml to alertdialog builder
+//                    alertDialogBuilder.setView(promptsView);
+//
+//                    final EditText userInput = (EditText) promptsView
+//                            .findViewById(R.id.editTextDialog);
+//
+//                    // set dialog message
+//                    alertDialogBuilder
+//                            .setCancelable(false)
+//                            .setPositiveButton("OK",
+//                                    new DialogInterface.OnClickListener() {
+//                                        public void onClick(DialogInterface dialog, int id) {
+//                                            // get user input and set it to result
+//                                            // edit text
+//                                            temp_amount = (userInput.getText()).toString();
+//                                            //updateRequestedAmount(data.get(position).name, )
+//                                        }
+//                                    })
+//                            .setNegativeButton("Cancel",
+//                                    new DialogInterface.OnClickListener() {
+//                                        public void onClick(DialogInterface dialog, int id) {
+//                                            dialog.cancel();
+//                                        }
+//                                    });
+//
+//                    // create alert dialog
+//                    AlertDialog alertDialog = alertDialogBuilder.create();
+//
+//                    // show it
+//                    alertDialog.show();
+//                }else{
+//
+//                    new AlertDialog.Builder(getContext())
+//                            .setTitle("Confirm Payment")
+//                            .setMessage("Are you sure you want to confirm?")
+//                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    // continue with delete
+//                                }
+//                            })
+//                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    // do nothing
+//                                }
+//                            })
+//                            .setIcon(android.R.drawable.ic_dialog_alert)
+//                            .show();
+//                }
             }
 
             @Override

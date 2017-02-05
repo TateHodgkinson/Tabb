@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Credit:"
-        android:textColor="@color/Black"
+        android:textColor="@color/MaterialGrey"
         android:textSize="180px"
         android:ems="10"
         android:gravity="center"
@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Debt:"
-        android:textColor="@color/Black"
+        android:textColor="@color/MaterialGrey"
         android:ems="10"
         android:gravity="center"
         android:textStyle="bold"
@@ -50,7 +50,7 @@
 
     <TextView
         android:text="$1000"
-        android:textColor="@color/MaterialGreen"
+        android:textColor="#8BC34A"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
