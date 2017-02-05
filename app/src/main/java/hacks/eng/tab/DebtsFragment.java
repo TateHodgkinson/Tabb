@@ -2,14 +2,12 @@ package hacks.eng.tab;
 
 import android.content.ContentResolver;
 import android.content.Context;
-
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
-
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,9 +15,7 @@ import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.EditText;
-
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -32,17 +28,18 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link DebtsFragment.OnFragmentInteractionListener} interface
+ * interface
  * to handle interaction events.
  * Use the {@link DebtsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class DebtsFragment extends Fragment {
 
+    public static DebtsFragment instance;
     String temp_amount = "0";
     List<Data> data;
-
-    private OnFragmentInteractionListener mListener;
+    Recycler_View_Adapter adapter;
+    RecyclerView recyclerView;
 
     public DebtsFragment() {
         // Required empty public constructor
@@ -57,7 +54,27 @@ public class DebtsFragment extends Fragment {
     // TODO: Rename and change types and number of parameters
     public static DebtsFragment newInstance() {
         DebtsFragment fragment = new DebtsFragment();
+        instance = fragment;
         return fragment;
+    }
+
+    public static String getContactName(Context context, String phoneNumber) {
+        ContentResolver cr = context.getContentResolver();
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
+        String contactName = null;
+        if (cursor.moveToFirst()) {
+            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+        }
+
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+
+        return contactName;
     }
 
     @Override
@@ -70,10 +87,19 @@ public class DebtsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // create recycled viewed
         View v = inflater.inflate(R.layout.fragment_debts, container, false);
-        data = fill_with_data();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        DatabaseUtils databaseUtils = new DatabaseUtils(myRef);
 
-        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.cardList);
-        Recycler_View_Adapter adapter = new Recycler_View_Adapter(data, getContext());
+        TelephonyManager tm = (TelephonyManager) this.getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+        String myPhoneNumber = tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
+
+        databaseUtils.createList(myPhoneNumber);
+
+        data = new ArrayList<>();
+
+        recyclerView = (RecyclerView) v.findViewById(R.id.cardList);
+        adapter = new Recycler_View_Adapter(data, getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -81,7 +107,7 @@ public class DebtsFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 // only if value is a debit, than can you pay money towards it
-                if(data.get(position).amount<0) {
+                if (data.get(position).amount < 0) {
                     LayoutInflater li = LayoutInflater.from(getContext());
                     View promptsView = li.inflate(R.layout.clear_debts_dialog, null);
 
@@ -130,90 +156,29 @@ public class DebtsFragment extends Fragment {
         return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+    public void fill_with_data(ArrayList<Data> data) {
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
-    public List<Data> fill_with_data() {
-
-        List<Data> data = new ArrayList<>();
         List<Data> temp = new ArrayList<>();
+        int size = adapter.list.size();
+//        adapter.list.clear();
+        for (int i = 0; i < size; i++) {
+            adapter.list.remove(i);
+            recyclerView.removeViewAt(i);
+            adapter.notifyItemRemoved(i);
+            adapter.notifyItemRangeChanged(i, size);
 
-        TelephonyManager tm = (TelephonyManager) getActivity().getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-        String myPhoneNumber = tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-        DatabaseUtils databaseUtils = new DatabaseUtils(myRef);
-
-        temp = databaseUtils.createList(myPhoneNumber);
-
-        for(Data d:temp){
-            data.add(new Data(getContactName(getContext(),d.name),d.amount, R.mipmap.ic_launcher));
+        }
+        for (int i = 0; i < data.size(); i++) {
+            adapter.insert(i, new Data(getContactName(getContext(), data.get(i).name), data.get(i).amount, R.mipmap.ic_launcher));
         }
 
-        return data;
     }
+
 
     public interface RecyclerViewItemClickListener {
         public void onClick(View view, int position);
 
         public void onLongClick(View view, int position);
-    }
-
-
-    public static String getContactName(Context context, String phoneNumber) {
-        ContentResolver cr = context.getContentResolver();
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
-        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
-        if (cursor == null) {
-            return null;
-        }
-        String contactName = null;
-        if (cursor.moveToFirst()) {
-            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
-        }
-
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
-
-        return contactName;
     }
 
 }

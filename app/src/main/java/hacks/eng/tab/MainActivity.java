@@ -52,7 +52,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DebtsFragment.OnFragmentInteractionListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String FILE_NAME = "temp.jpg";
     public static final int CAMERA_PERMISSIONS_REQUEST = 2;
@@ -171,11 +171,6 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
 //        }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 
 
