@@ -1,12 +1,17 @@
 package hacks.eng.tab;
 
 import android.content.Context;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -18,7 +23,6 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class DebtsFragment extends Fragment {
-
 
     private OnFragmentInteractionListener mListener;
 
@@ -41,16 +45,22 @@ public class DebtsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_debts, container, false);
+
+       View v = inflater.inflate(R.layout.fragment_debts, container, false);
+        List<Data> data = fill_with_data();
+
+        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.cardList);
+        Recycler_View_Adapter adapter = new Recycler_View_Adapter(data, getContext());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -90,5 +100,19 @@ public class DebtsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public List<Data> fill_with_data() {
+
+        List<Data> data = new ArrayList<>();
+
+        data.add(new Data("Batman vs Superman", "Following the destruction of Metropolis, Batman embarks on a personal vendetta against Superman ", R.mipmap.ic_launcher));
+        data.add(new Data("X-Men: Apocalypse", "X-Men: Apocalypse is an upcoming American superhero film based on the X-Men characters that appear in Marvel Comics ", R.mipmap.ic_launcher));
+        data.add(new Data("Captain America: Civil War", "A feud between Captain America and Iron Man leaves the Avengers in turmoil.  ", R.mipmap.ic_launcher));
+        data.add(new Data("Kung Fu Panda 3", "After reuniting with his long-lost father, Po  must train a village of pandas", R.mipmap.ic_launcher));
+        data.add(new Data("Warcraft", "Fleeing their dying home to colonize another, fearsome orc warriors invade the peaceful realm of Azeroth. ", R.mipmap.ic_launcher));
+        data.add(new Data("Alice in Wonderland", "Alice in Wonderland: Through the Looking Glass ", R.mipmap.ic_launcher));
+
+        return data;
     }
 }
