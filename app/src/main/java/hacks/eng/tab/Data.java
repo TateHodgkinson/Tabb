@@ -8,6 +8,7 @@ public class Data {
     public String name;
     public double amount;
     public int imageId;
+    boolean approved;
 
     Data(String name, double amount, int imageId) {
         this.name = name;
