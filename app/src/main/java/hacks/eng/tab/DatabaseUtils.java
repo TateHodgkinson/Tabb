@@ -89,7 +89,7 @@ public class DatabaseUtils {
         String[] peopleInvolved;
         String time;
 
-        Transaction(double amountx, String[] peopleInvolvedx, String[] namesx, String timex) {
+        Transaction(double amountx, String[] peopleInvolvedx, String timex) {
             amount = amountx;
             peopleInvolved = peopleInvolvedx;
             time = timex;

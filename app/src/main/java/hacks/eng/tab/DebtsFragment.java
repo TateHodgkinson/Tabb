@@ -118,6 +118,7 @@ public class DebtsFragment extends Fragment {
 
             @Override
             public void onLongClick(View view, int position) {
+                System.out.println(getContactName(getContext(), "6479847862"));
                 Toast.makeText(getActivity(), "On Long Click: " + position, Toast.LENGTH_SHORT).show();
             }
         }));
@@ -174,7 +175,7 @@ public class DebtsFragment extends Fragment {
         data.add(new Data("Jack", 22.00, R.mipmap.ic_launcher));
         data.add(new Data("Jamie", -25.00, R.mipmap.ic_launcher));
         data.add(new Data("Ryan", -20.00, R.mipmap.ic_launcher));
-        data.add(new Data("Abhinav", 40.00, R.mipmap.ic_launcher));
+        //data.add(new Data(getContactName(getContext(), "1111111111"), 40.00, R.mipmap.ic_launcher));
 
         return data;
     }

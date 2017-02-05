@@ -50,7 +50,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements DebtsFragment.OnFragmentInteractionListener, MainFragment.OnFragmentInteractionListener, View.OnClickListener {
@@ -121,10 +120,10 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
                 break;
             case R.id.add_manual:
                 String[] name = {"You"};
-                TelephonyManager tm = (TelephonyManager)this.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-                String myPhoneNumber =  tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
+                TelephonyManager tm = (TelephonyManager) this.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+                String myPhoneNumber = tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
                 String[] phoneNumber = {myPhoneNumber};
-                launchAddDebtDialog(0,name, phoneNumber);
+                launchAddDebtDialog(0, name, phoneNumber);
                 break;
             case R.id.add_photo:
                 addReceiptPhoto();
@@ -155,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-       // getMenuInflater().inflate(R.menu.menu_main, menu);
+        // getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -259,17 +258,17 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
                 data.hasExtra(ContactPickerActivity.RESULT_CONTACT_DATA)) {
             List<Contact> contacts = (List<Contact>) data.getSerializableExtra(ContactPickerActivity.RESULT_CONTACT_DATA);
             System.out.println("GOT CONTACTS: " + contacts.size());
-            String[] names = new String[contacts.size()+1];
-            String[] phoneNumbers = new String[contacts.size()+1];
+            String[] names = new String[contacts.size() + 1];
+            String[] phoneNumbers = new String[contacts.size() + 1];
             names[0] = "You";
-            TelephonyManager tm = (TelephonyManager)this.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-            String myPhoneNumber =  tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
+            TelephonyManager tm = (TelephonyManager) this.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+            String myPhoneNumber = tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
             phoneNumbers[0] = myPhoneNumber;
             for (int i = 0; i < contacts.size(); i++) {
                 Contact contact = contacts.get(i);
-                names[i+1] = contact.getDisplayName();
+                names[i + 1] = contact.getDisplayName();
                 String phone = contact.getPhone(ContactsContract.CommonDataKinds.Phone.TYPE_WORK);
-                phoneNumbers[i+1] = phone.substring(phone.length() - 10);
+                phoneNumbers[i + 1] = phone.substring(phone.length() - 10);
             }
             launchAddDebtDialog(0, names, phoneNumbers);
         }
@@ -401,14 +400,14 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
                 String[] names = new String[1];
                 String[] phoneNumbers = new String[1];
                 names[0] = "You";
-                TelephonyManager tm = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-                String myPhoneNumber =  tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
+                TelephonyManager tm = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+                String myPhoneNumber = tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
                 phoneNumbers[0] = myPhoneNumber;
 
-                try{
-                    launchAddDebtDialog(Double.valueOf(result),names, phoneNumbers);
-                }catch (Exception e){
-                    launchAddDebtDialog(0,names,phoneNumbers);
+                try {
+                    launchAddDebtDialog(Double.valueOf(result), names, phoneNumbers);
+                } catch (Exception e) {
+                    launchAddDebtDialog(0, names, phoneNumbers);
                 }
 
 
@@ -461,7 +460,7 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
                         }
                         System.out.println(count);
                         if (count == 4) {
-                            return number.getDescription().replaceAll("$","");
+                            return number.getDescription().replaceAll("$", "");
                         }
                     }
                 }
@@ -513,4 +512,5 @@ public class MainActivity extends AppCompatActivity implements DebtsFragment.OnF
             return null;
         }
     }
+
 }
