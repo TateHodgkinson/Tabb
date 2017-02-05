@@ -32,14 +32,14 @@ public class DatabaseUtils {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if (dataSnapshot.child("Users").child("Friends").hasChild(userCred)) {
+                if (dataSnapshot.child("Users").child(userCred).child("Friends").hasChild(userDebt)) {
                     double amountCur = (double) dataSnapshot.child("Users").child(userCred).child("Friends").child(userDebt).child("Amount").getValue();
                     myRef.child("Users").child(userCred).child("Friends").child(userDebt).child("Amount").setValue(amountCur + amount);
                 } else {
                     myRef.child("Users").child(userCred).child("Friends").child(userDebt).child("Amount").setValue(amount);
                 }
-                if (dataSnapshot.child("Users").child("Friends").hasChild(userDebt)) {
-                    double amountCur = (double) dataSnapshot.child("Users").child("Friends").child(userCred).child("Amount").getValue();
+                if (dataSnapshot.child("Users").child(userDebt).child("Friends").hasChild(userCred)) {
+                    double amountCur = (double) dataSnapshot.child("Users").child(userDebt).child("Friends").child(userCred).child("Amount").getValue();
                     myRef.child("Users").child(userDebt).child("Friends").child(userCred).child("Amount").setValue(amountCur - amount);
                 } else {
                     myRef.child("Users").child(userDebt).child("Friends").child(userCred).child("Amount").setValue(-amount);
