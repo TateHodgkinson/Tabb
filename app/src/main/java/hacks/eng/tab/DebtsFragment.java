@@ -22,6 +22,9 @@ import android.widget.EditText;
 
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -169,10 +172,21 @@ public class DebtsFragment extends Fragment {
     public List<Data> fill_with_data() {
 
         List<Data> data = new ArrayList<>();
+        List<Data> temp = new ArrayList<>();
 
         TelephonyManager tm = (TelephonyManager) getActivity().getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         String myPhoneNumber = tm.getLine1Number().substring(tm.getLine1Number().length() - 10);
-        
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        DatabaseUtils databaseUtils = new DatabaseUtils(myRef);
+
+        temp = databaseUtils.createList(myPhoneNumber);
+
+        for(Data d:temp){
+            data.add(new Data(getContactName(getContext(),d.name),d.amount, R.mipmap.ic_launcher));
+        }
+
         return data;
     }
 
