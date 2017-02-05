@@ -119,6 +119,7 @@ public class AddDebtDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Submit Data
+                        System.out.println("ONCLICK");
                         EditText text = (EditText)view.findViewById(R.id.editTextDialog);
                         double total = Double.valueOf(text.getText().toString());
                         runTransaction(total);
