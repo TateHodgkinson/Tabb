@@ -10,8 +10,8 @@
 
     <string name="image_picker_error">Something is wrong with that image. Pick a different one please.</string>
 
-    <string name="dialog"> Complete Payment fragment</string>
-    <string name="clear">clear fragment</string>
-    <string name="cancel">Hello blank cancel </string>
+    <string name="dialog_complete_payment"> Complete Payment</string>
+    <string name="clear">clear</string>
+    <string name="cancel">cancel </string>
 
 </resources>
