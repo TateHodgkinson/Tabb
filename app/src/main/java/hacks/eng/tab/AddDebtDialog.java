@@ -31,6 +31,7 @@ public class AddDebtDialog extends DialogFragment {
 
     /**
      * Use this factory method to create a new instance of
+     *
      * this fragment using the provided parameters.
      *
      * @param total    The total cost of the debt
